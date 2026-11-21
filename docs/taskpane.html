@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iLA</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <header>
+    <img src="assets/icon-32.png" alt="" width="24" height="24" />
+    <h1>iLA</h1>
+    <span class="tag">test</span>
+  </header>
+
+  <main id="app">
+    <p id="status" class="muted">Loading email…</p>
+
+    <section id="email" hidden>
+      <dl>
+        <dt>From</dt>      <dd id="from"></dd>
+        <dt>Subject</dt>   <dd id="subject"></dd>
+        <dt>Received</dt>  <dd id="received"></dd>
+      </dl>
+
+      <h2>Attachments <span id="att-count" class="muted"></span></h2>
+      <ul id="attachments"></ul>
+
+      <h2>Preview</h2>
+      <p id="preview" class="preview"></p>
+
+      <div class="actions">
+        <button id="copy">Copy summary</button>
+        <button id="send" class="primary" disabled title="Connects to iLA in the next version">Send to iLA</button>
+      </div>
+      <p id="toast" class="muted" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="taskpane.js"></script>
+</body>
+</html>
