@@ -12,7 +12,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 APP_ID = "46698586-e643-462a-95a0-5af6ff73ceca"   # keep fixed for this app
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 ROOT = Path(__file__).parent
 
 def build(base: str) -> Path:
