@@ -18,13 +18,28 @@
     <p id="status" class="muted">Loading email…</p>
 
     <section id="email" hidden>
-      <dl>
+      <dl id="meta">
         <dt>From</dt>      <dd id="from"></dd>
         <dt>Subject</dt>   <dd id="subject"></dd>
         <dt>Received</dt>  <dd id="received"></dd>
       </dl>
 
-      <h2>Attachments <span id="att-count" class="muted"></span></h2>
+      <div id="testmode" hidden>
+        <p class="muted">Test mode (not in Outlook). Pick DDTA PDFs to check the invoices. Nothing is sent.</p>
+        <input id="files" type="file" accept="application/pdf" multiple />
+      </div>
+
+      <h2>DDTA to Lightyear <span id="ddta-count" class="muted"></span></h2>
+      <p id="ddta-empty" class="muted">No DDTA PDFs attached to this email.</p>
+      <div id="ddta-list"></div>
+      <p class="muted small">Each ticked DDTA goes as its own email to <span id="ly-address"></span>: AP invoice page first, then the DDTA scan.</p>
+      <div class="actions">
+        <button id="send" class="primary" disabled>Send to Lightyear</button>
+      </div>
+      <p id="send-note" class="note warn"></p>
+      <p id="toast" class="muted" aria-live="polite"></p>
+
+      <h2>Other attachments <span id="att-count" class="muted"></span></h2>
       <ul id="attachments"></ul>
 
       <h2>Preview</h2>
@@ -32,12 +47,14 @@
 
       <div class="actions">
         <button id="copy">Copy summary</button>
-        <button id="send" class="primary" disabled title="Connects to iLA in the next version">Send to iLA</button>
       </div>
-      <p id="toast" class="muted" aria-live="polite"></p>
     </section>
   </main>
 
+  <script src="vendor/pdf-lib.min.js"></script>
+  <script src="vendor/msal-browser.min.js"></script>
+  <script src="config.js"></script>
+  <script src="ddta.js"></script>
   <script src="taskpane.js"></script>
 </body>
 </html>

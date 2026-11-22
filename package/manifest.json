@@ -2,14 +2,14 @@
   "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
   "manifestVersion": "1.17",
   "id": "46698586-e643-462a-95a0-5af6ff73ceca",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": {
     "short": "iLA",
     "full": "iLA - iLoveAccounting for Outlook"
   },
   "description": {
-    "short": "Send emails and attachments to iLA.",
-    "full": "iLA reads the open email and its attachments so you can process bills, invoices and remittances in iLA without leaving Outlook."
+    "short": "Turn emailed DDTAs into Lightyear bills.",
+    "full": "iLA reads the open email, builds an AP invoice for each attached DDTA, joins it to the DDTA scan and emails each one to Lightyear."
   },
   "developer": {
     "name": "AFIS Consultancy Pty Ltd",
@@ -51,7 +51,7 @@
         "capabilities": [
           {
             "name": "Mailbox",
-            "minVersion": "1.3"
+            "minVersion": "1.8"
           }
         ]
       },
@@ -61,7 +61,7 @@
             "capabilities": [
               {
                 "name": "Mailbox",
-                "minVersion": "1.3"
+                "minVersion": "1.8"
               }
             ]
           },
@@ -127,7 +127,7 @@
                       ],
                       "supertip": {
                         "title": "Open iLA",
-                        "description": "Show this email and its attachments in iLA."
+                        "description": "Send the DDTAs attached to this email to Lightyear."
                       },
                       "actionId": "TaskPaneRuntimeShow"
                     }
