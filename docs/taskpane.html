@@ -12,7 +12,7 @@
     }, true);
   </script>
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <link rel="stylesheet" href="taskpane.css?v=3" />
+  <link rel="stylesheet" href="taskpane.css?v=4" />
 </head>
 <body>
   <header>
@@ -39,6 +39,7 @@
       <h2>DDTA to Lightyear <span id="ddta-count" class="muted"></span></h2>
       <p id="ddta-empty" class="muted">No DDTA PDFs attached to this email.</p>
       <div id="ddta-list"></div>
+      <label class="test-toggle"><input id="test" type="checkbox" /> Test: send to me, not Lightyear</label>
       <p class="muted small">Each ticked DDTA goes as its own email to <span id="ly-address"></span>: AP invoice page first, then the DDTA scan.</p>
       <div class="actions">
         <button id="send" class="primary" disabled>Send to Lightyear</button>
@@ -58,10 +59,10 @@
     </section>
   </main>
 
-  <script src="vendor/pdf-lib.min.js?v=3"></script>
-  <script src="vendor/msal-browser.min.js?v=3"></script>
-  <script src="config.js?v=3"></script>
-  <script src="ddta.js?v=3"></script>
-  <script src="taskpane.js?v=3"></script>
+  <script src="vendor/pdf-lib.min.js?v=4"></script>
+  <script src="vendor/msal-browser.min.js?v=4"></script>
+  <script src="config.js?v=4"></script>
+  <script src="ddta.js?v=4"></script>
+  <script src="taskpane.js?v=4"></script>
 </body>
 </html>

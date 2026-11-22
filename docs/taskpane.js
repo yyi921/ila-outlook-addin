@@ -16,7 +16,9 @@ Office.onReady((info) => {
   inOutlook = info.host === Office.HostType.Outlook;
   document.getElementById("copy").addEventListener("click", copySummary);
   document.getElementById("send").addEventListener("click", sendAll);
-  text("ly-address", CFG.lightyearEmail || "(not set)");
+  const testBox = document.getElementById("test");
+  testBox.checked = !!CFG.testMode;
+  testBox.addEventListener("change", () => { rows.forEach((r) => refreshRow(r)); refreshSendButton(); });
 
   if (!inOutlook) { startTestMode(); return; }
   loadItem();
@@ -172,9 +174,16 @@ async function downloadRow(r) {
 
 /* ---------- Sending to Lightyear ---------- */
 
+/* In test mode the email goes to the signed-in user's own inbox. */
+function isTest() { return document.getElementById("test").checked; }
+function myAddress() {
+  try { return Office.context.mailbox.userProfile.emailAddress || ""; } catch { return ""; }
+}
+function recipient() { return isTest() ? myAddress() : CFG.lightyearEmail; }
+
 function sendBlocker() {
   if (!inOutlook) return "Open the add-in from Outlook to send. Here you can only download.";
-  if (!CFG.lightyearEmail) return "Set lightyearEmail in config.js.";
+  if (!recipient()) return isTest() ? "Can't read your email address for the test send." : "Set lightyearEmail in config.js.";
   if (!CFG.clientId) return "Sending is not set up yet: add the Entra client ID to config.js (see README). You can still download each PDF.";
   if (!Office.context.requirements.isSetSupported("NestedAppAuth", "1.1"))
     return "This Outlook version can't sign the add-in in. Use Outlook on the web or the new Outlook.";
@@ -185,7 +194,9 @@ function refreshSendButton() {
   const btn = document.getElementById("send");
   const picked = rows.filter((r) => r.check.checked && !r.done);
   const blocker = sendBlocker();
-  btn.textContent = picked.length ? `Send ${picked.length} to Lightyear` : "Send to Lightyear";
+  const target = isTest() ? "me (test)" : "Lightyear";
+  btn.textContent = picked.length ? `Send ${picked.length} to ${target}` : `Send to ${target}`;
+  text("ly-address", recipient() || (isTest() ? "your own inbox" : "(not set)"));
   btn.disabled = busy || !!blocker || !picked.length || picked.some((r) => !r.valid);
   text("send-note", rows.length ? blocker : "");
 }
@@ -195,6 +206,7 @@ async function sendAll() {
   if (!picked.length || busy) return;
   busy = true; refreshSendButton();
   let ok = 0;
+  const test = isTest(), to = recipient();   // fixed for the whole batch
   try {
     const token = await getToken();
     for (const r of picked) {            // one email per DDTA, in order
@@ -203,10 +215,14 @@ async function sendAll() {
         const { f, bytes, filename } = await buildRow(r);
         if (bytes.length > MAX_ATTACH_BYTES) throw new Error("PDF is over 3 MB. Download it and email it by hand.");
         refreshRow(r, "Sending…");
-        await sendMail(token, D.description(f), filename, bytes);
-        markSent(f.number);
-        r.done = true; r.sentOn = sentDate(f.number); r.check.checked = false;
-        refreshRow(r, `Sent to ${CFG.lightyearEmail}`, "good");
+        await sendMail(token, to, (test ? "[TEST] " : "") + D.description(f), filename, bytes);
+        if (test) {                        // a test doesn't count as sent to Lightyear
+          refreshRow(r, `Test sent to ${to}. Not sent to Lightyear yet.`, "good");
+        } else {
+          markSent(f.number);
+          r.done = true; r.sentOn = sentDate(f.number); r.check.checked = false;
+          refreshRow(r, `Sent to ${to}`, "good");
+        }
         ok++;
       } catch (e) { refreshRow(r, "Not sent: " + e.message, "bad"); }
     }
@@ -229,7 +245,7 @@ async function getToken() {
   catch { return (await pca.acquireTokenPopup(request)).accessToken; }
 }
 
-async function sendMail(token, subject, filename, bytes) {
+async function sendMail(token, to, subject, filename, bytes) {
   const res = await fetch("https://graph.microsoft.com/v1.0/me/sendMail", {
     method: "POST",
     headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
@@ -237,7 +253,7 @@ async function sendMail(token, subject, filename, bytes) {
       message: {
         subject,
         body: { contentType: "Text", content: `${subject}\n\nSent by iLA.` },
-        toRecipients: [{ emailAddress: { address: CFG.lightyearEmail } }],
+        toRecipients: [{ emailAddress: { address: to } }],
         attachments: [{
           "@odata.type": "#microsoft.graph.fileAttachment",
           name: filename, contentType: "application/pdf", contentBytes: bytesToBase64(bytes),

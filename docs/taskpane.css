@@ -34,3 +34,4 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .note.warn { color: #8a5a00; }
 .note.good { color: #1b6e36; }
 button.link { flex: none; border: 0; padding: 2px 0; background: none; color: var(--accent); text-decoration: underline; font-size: 12px; }
+.test-toggle { display: flex; gap: 6px; align-items: center; margin: 10px 0 4px; font-size: 13px; cursor: pointer; }

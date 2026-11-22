@@ -3,6 +3,10 @@ window.ILA_CONFIG = {
   // Where the combined invoice + DDTA PDFs are emailed, one PDF per email.
   lightyearEmail: "theville@lightyear.cloud",
 
+  // true: the "Test" box in the pane starts ticked, so emails go to the signed-in
+  // user's own inbox instead of Lightyear. Set to false once testing is finished.
+  testMode: true,
+
   // Entra app registration (Application/client ID) that lets the add-in send mail
   // as the signed-in user. Leave empty and the pane can still build and download PDFs.
   // Setup steps are in README.md, section "Let the add-in send email".

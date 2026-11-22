@@ -18,7 +18,8 @@ data/              sample DDTAs and invoice templates (git-ignored: real patron 
 1. Attachments named like `DDTA 1234 - 260105 CITIZEN Jane $2,500 DDTA#1234.pdf` are picked up. The DDTA number, date (YYMMDD), patron and amount come from the file name, because the scans have no readable text. Each value can be corrected in the pane before sending.
 2. The invoice page copies the Sage Intacct print in `data/DDTA invoice template.pdf`: supplier `SV0753--Gaming wins`, invoice and reference number `DDTA1234`, description `DDTA1234 - Jane Citizen`, the amount on `1054--Cash on Hand - Main Bank/Safe`, and $0.00 on `1080--GST Input Tax`, location `10--Breakwater Island Trust`. All three dates are the DDTA date. These constants are `DDTA_PROFILE` in `docs/ddta.js`.
 3. **Send to Lightyear** sends one email per ticked DDTA from the signed-in user's mailbox to the address in `config.js`. The subject is the description and the attachment is `DDTA1234 - Jane Citizen.pdf`. A copy lands in Sent Items.
-4. A DDTA already sent from this browser is unticked and marked "Already sent", so a second click does not create a duplicate bill.
+4. While **Test: send to me, not Lightyear** is ticked, the email goes to the signed-in user's own inbox with `[TEST]` in the subject. The box starts ticked while `testMode` is `true` in `config.js`; set it to `false` once testing is done.
+5. A DDTA already sent to Lightyear from this browser is unticked and marked "Already sent", so a second click does not create a duplicate bill.
 
 To check the output without Outlook, serve `docs/` locally (`python -m http.server` inside `docs/`), open `taskpane.html` and pick DDTA PDFs. That mode only downloads.
 
