@@ -4,8 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>iLA</title>
+  <script>
+    // Show any script error in the pane, so a failed start is not a blank screen.
+    window.addEventListener("error", function (e) {
+      var s = document.getElementById("status");
+      if (s) { s.hidden = false; s.textContent = "iLA error: " + (e.message || "a file failed to load") + (e.filename ? " (" + e.filename.split("/").pop() + ":" + e.lineno + ")" : ""); }
+    }, true);
+  </script>
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <link rel="stylesheet" href="taskpane.css" />
+  <link rel="stylesheet" href="taskpane.css?v=3" />
 </head>
 <body>
   <header>
@@ -51,10 +58,10 @@
     </section>
   </main>
 
-  <script src="vendor/pdf-lib.min.js"></script>
-  <script src="vendor/msal-browser.min.js"></script>
-  <script src="config.js"></script>
-  <script src="ddta.js"></script>
-  <script src="taskpane.js"></script>
+  <script src="vendor/pdf-lib.min.js?v=3"></script>
+  <script src="vendor/msal-browser.min.js?v=3"></script>
+  <script src="config.js?v=3"></script>
+  <script src="ddta.js?v=3"></script>
+  <script src="taskpane.js?v=3"></script>
 </body>
 </html>

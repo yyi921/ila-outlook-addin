@@ -1,5 +1,7 @@
 /* iLA Outlook add-in — reads the open email, turns each DDTA attachment into an
    AP invoice + DDTA PDF, and emails them one by one to Lightyear. */
+(function () {
+"use strict";
 const CFG = window.ILA_CONFIG || {};
 const D = window.ILADdta;
 const MAX_ATTACH_BYTES = 3 * 1024 * 1024; // Graph sendMail accepts about 3 MB per attachment this way
@@ -305,3 +307,4 @@ function formatBytes(n) {
   if (!n && n !== 0) return "";
   return n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(0)} KB` : `${(n / 1048576).toFixed(1)} MB`;
 }
+})();
