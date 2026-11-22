@@ -5,7 +5,7 @@ window.ILA_CONFIG = {
 
   // true: the "Test" box in the pane starts ticked, so emails go to the signed-in
   // user's own inbox instead of Lightyear. Set to false once testing is finished.
-  testMode: true,
+  testMode: false,
 
   // Entra app registration (Application/client ID) that lets the add-in send mail
   // as the signed-in user. Leave empty and the pane can still build and download PDFs.
