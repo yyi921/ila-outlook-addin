@@ -12,7 +12,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 APP_ID = "46698586-e643-462a-95a0-5af6ff73ceca"   # keep fixed for this app
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 ROOT = Path(__file__).parent
 
 def build(base: str) -> Path:
@@ -21,7 +21,7 @@ def build(base: str) -> Path:
         sys.exit("Base URL must be HTTPS.")
     host = urlparse(base).netloc
     icons = [{"size": s, "url": f"{base}/assets/icon-{s}.png"} for s in (16, 32, 80)]
-    mailbox = [{"name": "Mailbox", "minVersion": "1.3"}]
+    mailbox = [{"name": "Mailbox", "minVersion": "1.8"}]   # 1.8: read attachment content
 
     manifest = {
         "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
@@ -30,9 +30,9 @@ def build(base: str) -> Path:
         "version": VERSION,
         "name": {"short": "iLA", "full": "iLA - iLoveAccounting for Outlook"},
         "description": {
-            "short": "Send emails and attachments to iLA.",
-            "full": "iLA reads the open email and its attachments so you can process "
-                    "bills, invoices and remittances in iLA without leaving Outlook.",
+            "short": "Turn emailed DDTAs into Lightyear bills.",
+            "full": "iLA reads the open email, builds an AP invoice for each attached DDTA, "
+                    "joins it to the DDTA scan and emails each one to Lightyear.",
         },
         "developer": {
             "name": "AFIS Consultancy Pty Ltd",
@@ -74,7 +74,7 @@ def build(base: str) -> Path:
                             "label": "Open iLA",
                             "icons": icons,
                             "supertip": {"title": "Open iLA",
-                                         "description": "Show this email and its attachments in iLA."},
+                                         "description": "Send the DDTAs attached to this email to Lightyear."},
                             "actionId": "TaskPaneRuntimeShow",
                         }],
                     }],
